@@ -4,17 +4,25 @@ import { UserDetail } from "./UserDetail";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button, Table } from '@mantine/core';
 import { UserForm } from "./UserForm";
+import { useUsers } from "./api/getListUser";
+import { FormUser } from "./components/FormUser";
 
 
 export const UserList = () => {
-    const users = useSelector(listUsers);
+    //const users = useSelector(listUsers);
+    const { data: users, isLoading } = useUsers({
+        hasArtificialDelay: true,
+      });
+
+      const userData = users?.data;
+
     const [opened, { open, close }] = useDisclosure(false);
 
     return (
         <div>
             <Button onClick={open}>Ajouter un utilisateur</Button>
             <br/>
-            {users.length === 0 ? <>Aucun utilisateur n'est enregistré dans le store.</>:
+            {userData?.length === 0 ? <>Aucun utilisateur n'est enregistré dans le store.</>:
             <>
                 <Table>
                     <Table.Thead>
@@ -25,7 +33,7 @@ export const UserList = () => {
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {users.map((user,index)=>(
+                        {userData?.map((user,index)=>(
                             <UserDetail key={index} index={index} name={user.name} age={user.age}/>
                         ))}
                     </Table.Tbody>
@@ -38,7 +46,7 @@ export const UserList = () => {
                 title="Ajouter un utilisateur"
                 transitionProps={{ transition: 'fade', duration: 200 }}
             >
-                <UserForm close={close} />
+                <FormUser close={close} />
             </Modal>
         </div>
     );

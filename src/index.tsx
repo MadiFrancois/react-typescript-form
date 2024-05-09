@@ -7,17 +7,22 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import '@mantine/core/styles.css';
 import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Notifications } from './components/notifications/Notifications';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <QueryClientProvider client={new QueryClient()}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+          <Notifications />
+        </BrowserRouter>
+      </Provider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
