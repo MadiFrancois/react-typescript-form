@@ -1,3 +1,21 @@
+Method du protocole HTTP
+
+GET lister les entitées retrieve (Read)
+POST ajouter une entitée dans la BD (Create)
+PUT Mise à jour de l'entitée (Update)
+DELETE Supression d'une entité (Delete)
+
+
+CRUD // Create, Read, Update, Delete
+
+
+// OPTIONS, HEAD
+
+HTTP response Code
+2XX success
+4XX client error
+5XX server error 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.

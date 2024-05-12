@@ -11,7 +11,8 @@ interface RouteType {
 // const routes = new Array<RouteType>();
 const routes:Array<RouteType> = [
     { path: "/counter", action: "list", entity: "Fruit", element: Counter},
-    { path: "/user", action: "add", entity: "Fruit", element: UserList}
+    { path: "/user", action: "add", entity: "Fruit", element: UserList},
+    { path: "/other", action: "read", entity: "User", element: Counter}
 ];
 
 export default routes;

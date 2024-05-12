@@ -6,7 +6,7 @@ import { UserDto, UserForCreationDto, UserForUpdateDto } from '../type';
 import { useAddUser } from '../api/addUser';
 import { Notifications } from '../../../components/notifications/Notifications';
 import { useUpdateUser } from '../api/updateUser';
-import { Grid } from '@mantine/core';
+import { Button, Grid, Input } from '@mantine/core';
 
 interface FormUserProps{
     userData?: UserDto;
@@ -30,23 +30,24 @@ export const FormUser = ({userData,close}:FormUserProps) => {
         userData && userData?.id ? updateUser(data,formikHelpers) : createUser(data,formikHelpers) ;  
     };
     
+
     const createUserApi = useAddUser();
 
     function createUser(data: UserForCreationDto,formikHelpers: FormikHelpers<UserForCreationDto | UserForUpdateDto>) {
         createUserApi
         .mutateAsync(data)
-        .then(() => {
+        .then((response) => {
             formikHelpers.setSubmitting(false);
             Notifications.success("User created successfully");
-            close();
-        })
-        .then(() => {
-        
+            //close();
         })
         .catch((e) => {
             formikHelpers.setSubmitting(false);
             Notifications.error("There was an error  when creating the User");
             console.error(e);
+        })
+        .finally(() => {
+
         });
     }
         
@@ -76,33 +77,43 @@ export const FormUser = ({userData,close}:FormUserProps) => {
         <div>
             <h1>Add User</h1>
             <Formik
-            initialValues={user}
-            validationSchema={userValidationSchema}
-            onSubmit={(values,formikHelpers) => {
-                console.log(values);
-                // same shape as initial values
-                onSubmit(values as UserForCreationDto | UserForUpdateDto ,formikHelpers);
-            }}
+                initialValues={user}
+                validationSchema={userValidationSchema}
+                onSubmit={(values,formikHelpers) => {
+                    console.log(values);
+                    // same shape as initial values
+                    
+                    onSubmit(values as UserForCreationDto | UserForUpdateDto ,formikHelpers);
+                    
+                }}
             >
-            {({ errors, touched }) => (
+            {({ errors, touched, isSubmitting }) => (
                 <Form>
                     <Grid>
                         <Grid.Col>
-                            <Field name="name"  />
+                            <label>Name</label>
+                            <Field name="name"  label="Name"/>
                         </Grid.Col>
                         <Grid.Col>
-                            <ErrorMessage name="name" />
+                            <ErrorMessage name="name"/>
                         </Grid.Col>
 
                         <Grid.Col>
-                            <Field name="age"  />
+                            <label>Age</label>
+                            <Field name="age"  label="Age" />
                         </Grid.Col>
 
                         <Grid.Col>
                             <ErrorMessage name="age" />
                         </Grid.Col>
                         <Grid.Col>
-                            <button type="submit">Ajouter</button>
+                            <Button 
+                                disabled={isSubmitting} 
+                                loading={isSubmitting} 
+                                type="submit"
+                            >
+                                {userData?.id ? "Modifier": "Ajouter"}
+                            </Button>
                         </Grid.Col>                        
                 
                     </Grid>

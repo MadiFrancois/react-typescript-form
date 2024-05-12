@@ -5,23 +5,40 @@ import { MdDeleteForever, MdEdit, MdEditSquare } from "react-icons/md";
 import { FaUserEdit } from "react-icons/fa";
 import { useDisclosure } from "@mantine/hooks";
 import { UserForm } from "./UserForm";
+import { useDeleteUser } from "./api/deleteUser";
+import { Notifications } from "../../components/notifications/Notifications";
+import { UserDto } from "./type";
+import { FormUser } from "./components/FormUser";
 
-interface UserdetailProps{
-    index: number;
-    name: string;
-    age?:number;
+interface UserDetailProps{
+    user: UserDto;
 }
-const UserDetail = ({index,name,age}:UserdetailProps) =>  {
+
+
+const UserDetail = ({user}:UserDetailProps) =>  {
     const dispatch = useDispatch();
     const [opened, { open, close }] = useDisclosure(false);
+
+    const deleteUserApi = useDeleteUser();
+    function deleteUser(id: string) {
+        deleteUserApi
+        .mutateAsync(id)
+        .then(() => {
+            Notifications.success("User deleted successfully");
+        })
+        .catch((e:any) => {
+            Notifications.error("There was an error deleting the User");
+            console.error(e);
+        });
+    }
     return (
         <>
         <Table.Tr>
-            <Table.Td>{name}</Table.Td>
-            <Table.Td>{age}</Table.Td>
+            <Table.Td>{user.name}</Table.Td>
+            <Table.Td>{user.age}</Table.Td>
             <Table.Td>
                 <ActionIcon 
-                    onClick={() => dispatch(deleteUser(index))} 
+                    onClick={() => deleteUser(user.id)} 
                     variant="light" 
                     aria-label="Delete" 
                     style={{marginRight:"10px"}}
@@ -43,7 +60,7 @@ const UserDetail = ({index,name,age}:UserdetailProps) =>  {
             title="Ajouter un utilisateur"
             transitionProps={{ transition: 'fade', duration: 200 }}
         >
-            <UserForm index={index} user={{name:name,age:age}} close={close} />
+            <FormUser  userData={user} close={close} />
         </Modal>
         </>
     );

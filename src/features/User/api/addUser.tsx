@@ -4,7 +4,7 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { UserDto, UserForCreationDto } from "../type";
 import { userKeys } from "./user.Keys";
 
-const addUser = async (data: UserForCreationDto) => {
+export const addUser = async (data:UserForCreationDto) => {
   const axios = await clients();
 
   return axios
@@ -18,7 +18,7 @@ export function useAddUser(
   const queryClient = useQueryClient();
 
   return useMutation(
-    (newPlateform: UserForCreationDto) => addUser(newPlateform),
+    (newUser: UserForCreationDto) => addUser(newUser),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(userKeys.lists());
