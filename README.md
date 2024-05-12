@@ -15,6 +15,7 @@ HTTP response Code
 2XX success
 4XX client error
 5XX server error 
+504,503,500
 
 # Getting Started with Create React App
 
